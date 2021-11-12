@@ -21,13 +21,13 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
 import time
-
+import jetson.utils
+import jetson.inference
 '''
 from torchviz import make_dot
 import onnx
 import onnxruntime as ort
 '''
-
 args = utils.parse_command()
 print(args)
 os.environ["CUDA_VISIBLE_DEVICES"] = args.gpu # Set the GPU.
@@ -37,6 +37,10 @@ fieldnames = ['rmse', 'mae', 'delta1', 'absrel',
 best_fieldnames = ['best_epoch'] + fieldnames
 best_result = Result()
 best_result.set_to_worst()
+
+# set DetectNet args
+
+#net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
 
 # set Gstreamer pipeline - regular cv2.VideoCapture(0) doesnt work for RPi v2
 
@@ -101,11 +105,11 @@ def main():
         width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
         height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
         fps = cap.get(cv2.CAP_PROP_FPS)
-        out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
-        out_depth = cv2.VideoWriter('depth_out.avi',fourcc,fps,(224,224),False)
-        out_color = cv2.VideoWriter('color_out.avi',fourcc,fps,(int(width),int(height)))
-        print('=> Capturing video using pipeline', gstreamer_pipeline(flip_method=0))
 
+        out_depth = cv2.VideoWriter('depth_out.avi',fourcc,10,(224,224),False)
+        out_color = cv2.VideoWriter('color_out.avi',fourcc,10,(int(width),int(height)))
+
+        print('=> Capturing video using pipeline', gstreamer_pipeline(flip_method=0))
         while True:
 
             start = time.time()
@@ -113,15 +117,26 @@ def main():
             
             #filename = 'image.jpg'
             ret, frame = cap.read()
+            
+            # object detection
+            #img_obj = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA).astype(np.float32)
+            #img_obj = jetson.utils.cudaFromNumpy(img_obj)
+            #detections = net.Detect(img_obj, frame.shape[1], frame.shape[0])
+            #img_cv2 = jetson.utils.cudaToNumpy(img_obj)
+            #cv2.imshow('Object Detection', img_cv2/255)
+            #for detect in detections:
+                 #  print('Detected:',net.GetClassDesc(detect.ClassID))
+                 #  print('Coordinates: Top',detect.Top)
+            out_color.write(frame)
 
-            #out_color.write(frame)
-
-            cv2.imshow('frame', frame)
+            #cv2.imshow('frame', frame)
 
             image = Image.fromarray(frame) # loads PIL image from captured frame
- 
+            
             image = image.resize((224,224),Image.ANTIALIAS) # resize to 224x224 with AA filtering
-
+            
+            cv2_img = np.array(image)
+            cv2.imshow('image after resize',cv2_img)
             transform = transforms.Compose([transforms.ToTensor()]) 
             img = transform(image) # uses above function to make resized image into pytorch tensor
 
@@ -159,7 +174,9 @@ def main():
             print('Current FPS:', round(1/(end-start),3))
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
+                print('End time is', time.time())
                 break # CTRL + Q to stop
+
 
             #out.save('depth.png')
         
