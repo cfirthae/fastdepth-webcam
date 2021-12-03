@@ -1,5 +1,4 @@
 import os
-import time
 import csv
 import numpy as np
 
@@ -38,9 +37,7 @@ best_fieldnames = ['best_epoch'] + fieldnames
 best_result = Result()
 best_result.set_to_worst()
 
-# set DetectNet args
-
-#net = jetson.inference.detectNet("ssd-mobilenet-v2", threshold=0.5)
+net = jetson.inference.segNet("fcn-resnet18-sun-512x400") # load segNet
 
 # set Gstreamer pipeline - regular cv2.VideoCapture(0) doesnt work for RPi v2
 
@@ -101,42 +98,28 @@ def main():
         cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
         #cap = cv2.VideoCapture('test_video.mp4')
         # Define the codec and create VideoWriter object
-        fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-        width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-        height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-        fps = cap.get(cv2.CAP_PROP_FPS)
+        #fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+        #width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+        #height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+        #fps = cap.get(cv2.CAP_PROP_FPS)
 
-        out_depth = cv2.VideoWriter('depth_out.avi',fourcc,10,(224,224),False)
-        out_color = cv2.VideoWriter('color_out.avi',fourcc,10,(int(width),int(height)))
+        #out_depth = cv2.VideoWriter('depth_out.avi',fourcc,10,(224,224),False)
+        #out_color = cv2.VideoWriter('color_out.avi',fourcc,10,(int(width),int(height)))
 
         print('=> Capturing video using pipeline', gstreamer_pipeline(flip_method=0))
         while True:
 
+
             start = time.time()
-
-            
-            #filename = 'image.jpg'
             ret, frame = cap.read()
-            
-            # object detection
-            #img_obj = cv2.cvtColor(frame, cv2.COLOR_BGR2RGBA).astype(np.float32)
-            #img_obj = jetson.utils.cudaFromNumpy(img_obj)
-            #detections = net.Detect(img_obj, frame.shape[1], frame.shape[0])
-            #img_cv2 = jetson.utils.cudaToNumpy(img_obj)
-            #cv2.imshow('Object Detection', img_cv2/255)
-            #for detect in detections:
-                 #  print('Detected:',net.GetClassDesc(detect.ClassID))
-                 #  print('Coordinates: Top',detect.Top)
-            out_color.write(frame)
 
-            #cv2.imshow('frame', frame)
 
             image = Image.fromarray(frame) # loads PIL image from captured frame
             
             image = image.resize((224,224),Image.ANTIALIAS) # resize to 224x224 with AA filtering
             
             cv2_img = np.array(image)
-            cv2.imshow('image after resize',cv2_img)
+            #cv2.imshow('image after resize',cv2_img)
             transform = transforms.Compose([transforms.ToTensor()]) 
             img = transform(image) # uses above function to make resized image into pytorch tensor
 
@@ -157,15 +140,13 @@ def main():
                 out = np.zeros(depth.shape, dtype=depth.type)
 
             out = out.cpu().detach().numpy()  
-            out = out.reshape(224,224)  
+            out = out.reshape(224*2,224*2)  
             
-            print('out shape is', out.shape)
             out = Image.fromarray(out) # creates PIL Image obj from above array
             out = out.convert('L')  # converts image to grayscale 
             
             out = np.array(out)
-            print('out type is',type(out))
-            out_depth.write(out)
+            #out_depth.write(out)
 
             cv2.imshow('out', out)
             #plt.imshow(out, cmap=plt.cm.inferno)
@@ -174,7 +155,6 @@ def main():
             print('Current FPS:', round(1/(end-start),3))
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
-                print('End time is', time.time())
                 break # CTRL + Q to stop
 
 
