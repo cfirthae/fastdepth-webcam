@@ -43,7 +43,7 @@ img_height = camera.get(cv2.CAP_PROP_FRAME_HEIGHT)
 fps = camera.get(cv2.CAP_PROP_FPS)
 out = cv2.VideoWriter('full_hallway_segmented.avi',fourcc,10,(int(img_width),int(img_height)))
 
-#class_mask = None
+class_mask = None
 #class_mask_np = None
 
 while camera.isOpened():
@@ -58,22 +58,23 @@ while camera.isOpened():
 
         net.Process(img_input)
         #jetson.utils.cudaDeviceSynchronize()
-        #grid_width, grid_height = net.GetGridSize()
-        #if class_mask is None:
-        #        class_mask = jetson.utils.cudaAllocMapped(width=grid_width, height=grid_height, format='gray8')
-        #        net.Mask(class_mask,grid_width,grid_height)
+        grid_width, grid_height = net.GetGridSize()
+        if class_mask is None:
+                class_mask = jetson.utils.cudaAllocMapped(width=224, height=224, format=img_input.format)
+                net.Mask(class_mask,224,224) #change mask size here and above
 
-        #        class_mask_np = jetson.utils.cudaToNumpy(class_mask)
-
+                class_mask_np = jetson.utils.cudaToNumpy(class_mask)[:,0:2]
+        print('Mask shape is',class_mask_np.shape)
+        #print(class_mask_np)
 
  
-        net.Overlay(img_input)
+        net.Mask(img_input)
         jetson.utils.cudaDeviceSynchronize()
 
         img_np = jetson.utils.cudaToNumpy(img_input)
 
         img_np = cv2.cvtColor(img_np, cv2.COLOR_RGBA2BGR).astype(np.float32)
-        out.write(np.uint8(img_np))
+        #out.write(np.uint8(img_np))
         img_cv2 = img_np.copy()
         cv2.imshow('OpenCV Output', img_cv2/255)
 
@@ -83,3 +84,32 @@ while camera.isOpened():
 
 camera.release()
 cv2.destroyAllWindows()
+
+
+### extra
+#x = depth_img.resize(1,3,224,224)
+#            #x = torch.rand(1,3,224,224)
+        #    x_torch = x.type(torch.cuda.FloatTensor)
+           
+       #     depth = model(x_torch) #returns torch.Tensor of shape torch.Size([1,1,224,224])
+
+      #      depth_min = depth.min()
+     #       depth_max = depth.max()
+    #        max_val = (2**(8))-1 # 255
+
+   #         if depth_max - depth_min > np.finfo("float").eps:
+  #              out = max_val * (depth - depth_min) / (depth_max - depth_min)
+                #returns torch.Tensor of shape torch.Size([1,1,224,224])
+ #           else:
+#                out = np.zeros(depth.shape, dtype=depth.type)
+
+#            out = out.cpu().detach().numpy()  
+#            out = out.reshape(224,224)  
+            
+#            out = Image.fromarray(out) # creates PIL Image obj from above array
+#            out = out.convert('L')  # converts image to grayscale 
+            
+#            out = np.array(out)
+            #out_depth.write(out)
+
+#            cv2.imshow('Depth Map Output', out)

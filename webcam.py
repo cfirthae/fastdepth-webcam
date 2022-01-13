@@ -2,6 +2,10 @@ import os
 import csv
 import numpy as np
 
+import jetson.inference
+import jetson.utils
+from segnet_utils import *
+
 import torch
 import torch.nn.parallel
 import torch.backends.cudnn as cudnn
@@ -20,8 +24,6 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import cv2
 import time
-import jetson.utils
-import jetson.inference
 '''
 from torchviz import make_dot
 import onnx
@@ -96,6 +98,7 @@ def main():
 
         
         cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
+        class_mask = None
         #cap = cv2.VideoCapture('test_video.mp4')
         # Define the codec and create VideoWriter object
         #fourcc = cv2.VideoWriter_fourcc(*'MJPG')
@@ -118,12 +121,42 @@ def main():
             
             image = image.resize((224,224),Image.ANTIALIAS) # resize to 224x224 with AA filtering
             
-            cv2_img = np.array(image)
+            img_resize = np.array(image)
             #cv2.imshow('image after resize',cv2_img)
             transform = transforms.Compose([transforms.ToTensor()]) 
-            img = transform(image) # uses above function to make resized image into pytorch tensor
+            depth_img = transform(image) # uses above function to make resized image into pytorch tensor
+            
+            ### Segmentation Section ###
+            seg_img = cv2.cvtColor(img_resize, cv2.COLOR_BGR2RGB)
+            seg_img = cv2.cvtColor(seg_img, cv2.COLOR_RGB2RGBA).astype(np.float32)
 
-            x = img.resize(1,3,224,224)
+        
+            seg_img = jetson.utils.cudaFromNumpy(seg_img)
+
+            net.Process(seg_img)
+            
+            grid_width, grid_height = net.GetGridSize()
+            if class_mask is None:
+                    class_mask = jetson.utils.cudaAllocMapped(width=224, height=224, format='gray8')
+                    net.Mask(class_mask,224,224)
+
+                    class_mask_np = jetson.utils.cudaToNumpy(class_mask)
+            print('Mask shape is',class_mask_np.shape)
+
+
+ 
+            #net.Overlay(seg_img)
+            jetson.utils.cudaDeviceSynchronize()
+
+            #seg_img = jetson.utils.cudaToNumpy(seg_img)
+
+            #seg_img = cv2.cvtColor(seg_img, cv2.COLOR_RGBA2BGR).astype(np.float32)
+
+            
+            #cv2.imshow('Segmentation Output', seg_img/255)           
+
+            ### Depth Map Section ###
+            x = depth_img.resize(1,3,224,224)
             #x = torch.rand(1,3,224,224)
             x_torch = x.type(torch.cuda.FloatTensor)
            
@@ -140,18 +173,24 @@ def main():
                 out = np.zeros(depth.shape, dtype=depth.type)
 
             out = out.cpu().detach().numpy()  
-            out = out.reshape(224*2,224*2)  
+            out = out.reshape(224,224)  
             
             out = Image.fromarray(out) # creates PIL Image obj from above array
             out = out.convert('L')  # converts image to grayscale 
             
             out = np.array(out)
+
+            #find max val index using below 
+            
+            #out_min = np.where(out == np.amin(out))
+            #out[out_min[0],out_min[1]] = 255
             #out_depth.write(out)
 
-            cv2.imshow('out', out)
-            #plt.imshow(out, cmap=plt.cm.inferno)
+            #cv2.imshow('Depth Map Output', out)
+            
 
             end = time.time()
+            print('out shape is',out.shape)
             print('Current FPS:', round(1/(end-start),3))
             
             if cv2.waitKey(1) & 0xFF == ord('q'):
