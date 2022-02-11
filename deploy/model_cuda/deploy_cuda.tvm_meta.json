@@ -1,0 +1,940 @@
+{
+  "tvm_version": "0.1.0", 
+  "func_info": {
+    "fuse_conv2d_broadcast_add_relu_10_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_9_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_upsampling_elemwise_add_2_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.x", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_7_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_9_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_22_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_2_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_12_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_11_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_2_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_8_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_10_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_17_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_18_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_6_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_6_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_4_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_5_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_mul_broadcast_add_clip_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_upsampling_1_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.x", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_3_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_8_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_4_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_13_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_14_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_15_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_1_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_16_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_7_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_upsampling_elemwise_add_1_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.x", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_19_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_20_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_21_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_23_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_mul_broadcast_add_clip_2_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_upsampling_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.x", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_clip_1_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_3_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_mul_broadcast_add_clip_1_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_upsampling_elemwise_add_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.x", 
+        "threadIdx.x"
+      ]
+    }, 
+    "fuse_conv2d_broadcast_add_relu_5_kernel0": {
+      "name": "", 
+      "arg_types": [
+        "handle", 
+        "handle", 
+        "handle", 
+        "handle"
+      ], 
+      "thread_axis_tags": [
+        "blockIdx.z", 
+        "blockIdx.y", 
+        "blockIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x", 
+        "threadIdx.z", 
+        "threadIdx.y", 
+        "threadIdx.x"
+      ]
+    }
+  }
+}

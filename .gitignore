@@ -1,5 +1,7 @@
 __pycache__/
+networks/
 *.pyc
 *.avi
 *.jpg
 *.mp4
+*.jpeg
