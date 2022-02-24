@@ -6,7 +6,7 @@ def gstreamer_pipeline(
     capture_height=224,
     display_width=224,
     display_height=224,
-    framerate=60,
+    framerate=30,
     flip_method=0,
 ):
     return (
@@ -33,9 +33,9 @@ cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
 # Define the codec and create VideoWriter object
 fourcc = cv2.VideoWriter_fourcc(*'MJPG')
 width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
-print('width', width)
+print('width ', width)
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
-print('height', height)
+print('height ', height)
 fps = cap.get(cv2.CAP_PROP_FPS)
 out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
 
@@ -46,7 +46,7 @@ while cap.isOpened():
         #print('frame shape is', frame.shape)
 
         # write the flipped frame
-        #out.write(frame)
+        out.write(frame)
 
         cv2.imshow('frame',frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):

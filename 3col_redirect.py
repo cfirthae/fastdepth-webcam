@@ -20,9 +20,11 @@ import time
 
 
 net = jetson.inference.segNet("fcn-resnet18-sun-640x512") # load segNet
-ardLeft = "http://192.168.43.2/lgd/199"
-ardMid = "http://192.168.43.2/lgd/919"
-ardRight = "http://192.168.43.2/lgd/991"
+rng = np.random.default_rng()
+ardLeft = "http://192.168.110.2/lgd/199"
+ardMid = "http://192.168.110.2/lgd/919"
+ardRight = "http://192.168.110.2/lgd/991"
+
 # set Gstreamer pipeline - regular cv2.VideoCapture(0) doesnt work for RPi v2
 
 def gstreamer_pipeline(
@@ -54,30 +56,33 @@ def gstreamer_pipeline(
 
 
 def main():
-	#print(model)
 	pth = torch.load('best_result.pth.tar') # load fastdepth model w Torch
 	model = pth['model'] # index correct model path
-	quad = [[],[],[]] # object detection counter
 	fps_list = [] # for fps averaging 
-	#model.eval()
+	counter = [] # object detection counter
+	lane = 'middle' # begin in middle lane
 
 
 	cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER) # initialize webcam
 	class_mask = None
-	#cap = cv2.VideoCapture('chair_approach_color.avi') # load video 
+	fourcc = cv2.VideoWriter_fourcc(*'MJPG')
+	fourccDepth = cv2.VideoWriter_fourcc(*'X264')
+	width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+	print('width ', width)
+	height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+	print('height ', height)
+	fps = cap.get(cv2.CAP_PROP_FPS)
+	colorOut = cv2.VideoWriter('depth.avi',fourcc,fps,(int(width),int(height)))
+	depthOut = cv2.VideoWriter('depth.avi',fourccDepth,fps,(int(width),int(height)))
 	
-	# Define the codec and create VideoWriter object
-	#fourcc = cv2.VideoWriter_fourcc(*'MJPG')
-	#out_depth = cv2.VideoWriter('depth_out.avi',fourcc,10,(224,224),False)
-
+	i = 0;
 	while cap.isOpened():	# bool if vid cap is working	
 		start = time.time()
 		ret, frame = cap.read()
-		cv2.imshow('frame',frame)
+		#cv2.imshow('frame',frame)
+		colorOut.write(frame)
 
-
-		image = Image.fromarray(frame) #Image.open('image.jpg') # loads PIL image from captured frame
-		#print('size is',image.size)    
+		image = Image.fromarray(frame) #Image.open('image.jpg') # loads PIL image from captured frame   
 		image = image.resize((224,224),Image.ANTIALIAS) # resize to 224x224 with AA filtering
 		    
 		img_resize = np.array(image) # convert PIL to np array
@@ -101,92 +106,101 @@ def main():
 
 		class_blacklist = (1,2,13) # class ID blacklist 
 		class_mask = np.reshape(class_mask_np, [224,224]) # elimininates extra dimension
-
-		#net.Overlay(seg_img)
-		#jetson.utils.cudaDeviceSynchronize()
-
-		#seg_img = jetson.utils.cudaToNumpy(seg_img)
-
-		#seg_img = cv2.cvtColor(seg_img, cv2.COLOR_RGBA2BGR).astype(np.float32)
-
-		#cv2.imwrite("seg.jpeg",seg_img)  
-		#cv2.imshow('Segmentation Output', seg_img/255)           
+           
 
 		    ### Depth Map Section ###
 		x = depth_img.resize(1,3,224,224)
-		    #x = torch.rand(1,3,224,224)
 		x_torch = x.type(torch.cuda.FloatTensor)
 
 
 		depth = model(x_torch) #returns torch.Tensor of shape torch.Size([1,1,224,224])
 		#the above line takes the longest to run and is the result of the first frame wait time
+		if(i == 0):
+			print('running')
+			i = 1
+	
 		depth_min = depth.min()
 		depth_max = depth.max()
 		max_val = (2**(8))-1 # 255
 
-		if depth_max - depth_min > np.finfo("float").eps:
+		if depth_max - depth_min > np.finfo("float").eps: # min != max?
 		       out = max_val * (depth - depth_min) / (depth_max - depth_min)
 			#returns torch.Tensor of shape torch.Size([1,1,224,224])
 		else:
 			out = np.zeros(depth.shape, dtype=depth.type)
 
-		out = out.cpu().detach().numpy()  
+		out = out.cpu().detach().numpy()
 		out = out.reshape(224,224)  
 		    
 		out = Image.fromarray(out) # creates PIL Image obj from above array
 		out = out.convert('L')  # converts image to grayscale 
 		    
 		out = np.array(out)
+		depthOut.write(out)
 
 		out_filtered = np.where((np.isin(class_mask,class_blacklist)),255,out)
 
 
-		    #find max val index using below 
+		#find max val index using below 
 		    
 		out_min = np.where(out_filtered == np.amin(out_filtered))
-		#out_depth.write(out_filtered)
+		
 		
 		#concerned with column values - col = out_min[1]
 		#divide into four regions 
 		# 0 - 75 # 76 - 150 # 151 - 224 
-		check = []
-		num_frames = 3
-		
-		# concern with this approach - what if the wearer is walking on left column, detects front object, but can't navigate left to avoid (and we don't want them to hit wall)
-		
+
+		num_frames = 20 # number of consecutive appearances required to register object
+
 		columns = out_min[1]
-		if any((col >= 0 and col <= 75) for col in columns):
-			quad[0].append('1')
-			if len(quad[0]) == num_frames:
-				try:
-					requests.get(url = ardLeft)
-				except:
-					pass
-				quad[0] = []
-		if any((col > 76 and col <= 150) for col in columns):
-			quad[1].append('1')
-			if len(quad[1]) == num_frames:
-				try:
-					requests.get(url = ardMid)
-				except:
-					pass
-				quad[1] = []
-		if any((col > 151 and col <= 224) for col in columns):
-			quad[2].append('1')
-			if len(quad[2]) == num_frames:
-				try:
-					requests.get(url = ardRight)
-				except:
-					pass
-				quad[2] = []
-		#print('quad pre check is',quad)
-		for ele in quad:
-			if len(ele) > 0:
-				check.append(ele)
-				if len(check) > 1:
-					quad = [[],[],[]]				
-		#print('quad post check is',quad)
-		cv2.imshow('Depth Map Output', out_filtered)
+
+		if any((col > 57 and col <= 168) for col in columns):
+			counter.append('1')
+			if len(counter) == num_frames:
+				if lane == 'middle':
+					if (rng.integers(10) % 2) == 0:
+						try:
+							print('got here left')
+							requests.get(url = ardLeft)
+						except:
+							pass
+						lane = 'left'
+						print('changed lane to ', lane)
+						counter = []
+						continue
+					else:
+						try:
+							print('got here right')
+							requests.get(url = ardRight)
+						except:
+							pass						
+						lane = 'right'
+						print('changed lane to ', lane)
+						counter = []
+						continue
+				if lane == 'right':
+					try:
+						requests.get(url = ardLeft)
+					except:
+						pass
+					lane = 'middle'
+					print('changed lane to ', lane)
+					quad = []
+					continue
+				if lane == 'left':
+					try:
+						requests.get(url = ardLeft)
+					except:
+						pass
+					lane = 'middle'
+					print('changed lane to ', lane)
+					counter = []
+					continue
+		else:
+			counter = []
+				
+		
+		#cv2.imshow('Depth Map Output', out)
 		    
 
 		end = time.time()
