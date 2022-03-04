@@ -31,7 +31,7 @@ import onnxruntime as ort
 '''
 
 
-net = jetson.inference.segNet("fcn-resnet18-sun-640x512") # load segNet
+net = jetson.inference.segNet("fcn-resnet18-sun-512x400") # load segNet
 
 # set Gstreamer pipeline - regular cv2.VideoCapture(0) doesnt work for RPi v2
 
@@ -100,7 +100,7 @@ def main():
         #ret, frame = cap.read()
 
 
-        image = Image.open('stock_hallway.jpg') # loads PIL image from captured frame
+        image = Image.open('image.jpg') # loads PIL image from captured frame
             
         image = image.resize((224,224),Image.ANTIALIAS) # resize to 224x224 with AA filtering
             

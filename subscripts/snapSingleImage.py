@@ -2,11 +2,11 @@ import numpy as np
 import cv2
 
 def gstreamer_pipeline(
-    capture_width=224,
-    capture_height=224,
-    display_width=224,
-    display_height=224,
-    framerate=15,
+    capture_width=640,
+    capture_height=512,
+    display_width=640,
+    display_height=512,
+    framerate=30,
     flip_method=0,
 ):
     return (
@@ -37,27 +37,26 @@ print('width ', width)
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 print('height ', height)
 fps = cap.get(cv2.CAP_PROP_FPS)
-out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
+#out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
+i = 0
 
-while cap.isOpened():
-	ret, frame = cap.read()
-	if ret==True:
-		print('>> Frames loading')
-		frame = cv2.flip(frame,0)
-		frame = np.resize(frame,(224,224,3))
-		frame[:,:,1] = 0;
-		frame[:,:,2] = 0;
-		#print(frame)
-		# write the flipped frame
-		out.write(frame)
+while (i == 0):
+    ret, frame = cap.read()
+    if ret==True:
+        #print('frame shape is', frame.shape)
 
-		cv2.imshow('frame',frame)
-	if cv2.waitKey(1) & 0xFF == ord('q'):
-		break
+        # write the flipped frame
+        #out.write(frame)
+        cv2.imwrite('image.jpg',frame)
 
-
+        #cv2.imshow('frame',frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            break
+        i = 1
+    else:
+        break
 
 # Release everything if job is finished
 cap.release()
-out.release()
+#out.release()
 cv2.destroyAllWindows()

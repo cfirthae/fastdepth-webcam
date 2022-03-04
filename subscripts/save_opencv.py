@@ -39,18 +39,19 @@ print('height ', height)
 fps = cap.get(cv2.CAP_PROP_FPS)
 out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
 
+
 while cap.isOpened():
     ret, frame = cap.read()
     if ret==True:
-        frame = cv2.flip(frame,0)
-        #print('frame shape is', frame.shape)
 
         # write the flipped frame
         out.write(frame)
+	
 
         cv2.imshow('frame',frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+	i = 1
     else:
         break
 
