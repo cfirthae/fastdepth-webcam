@@ -37,7 +37,7 @@ print('width ', width)
 height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 print('height ', height)
 fps = cap.get(cv2.CAP_PROP_FPS)
-out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
+#out = cv2.VideoWriter('output.avi',fourcc,fps,(int(width),int(height)))
 
 while cap.isOpened():
 	ret, frame = cap.read()
@@ -49,7 +49,7 @@ while cap.isOpened():
 		#frame[:,:,2] = 0;
 		#print(frame)
 		# write the flipped frame
-		out.write(frame)
+		#out.write(frame)
 
 		cv2.imshow('frame',frame)
 	if cv2.waitKey(1) & 0xFF == ord('q'):
@@ -59,5 +59,5 @@ while cap.isOpened():
 
 # Release everything if job is finished
 cap.release()
-out.release()
+#out.release()
 cv2.destroyAllWindows()

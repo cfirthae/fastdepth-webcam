@@ -71,7 +71,7 @@ def main():
 
 	net.Process(seg_img) # process img in model
 
-	net.Overlay(seg_img)
+	net.Mask(seg_img)
 	jetson.utils.cudaDeviceSynchronize()
 
 	img_np = jetson.utils.cudaToNumpy(seg_img)

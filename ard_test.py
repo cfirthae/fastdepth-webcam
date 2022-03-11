@@ -1,6 +1,8 @@
 import requests
 
-arduinoIP = "http://192.168.110.218/lgd/199"
+thingIP = "192.168.31.124"
+
+arduinoIP = "http://192.168.31.124/lgd/199"
 
 try:
 	requests.get(url = arduinoIP)
@@ -8,7 +10,7 @@ try:
 except:
 	pass
 
-arduinoIP = "http://192.168.110.218/lgd/919"
+arduinoIP = "http://" + thingIP + "/lgd/919"
 
 try:
 	requests.get(url = arduinoIP)
@@ -16,7 +18,7 @@ try:
 except:
 	pass
 
-arduinoIP = "http://192.168.110.218/lgd/991"
+arduinoIP = "http://" + thingIP + "/lgd/991"
 
 try:
 	requests.get(url = arduinoIP)

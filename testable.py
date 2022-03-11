@@ -20,11 +20,12 @@ import time
 
 vidExt = input('Video file name?\n>>') # to be added to video file name
 num_frames = int(input('Number of frames?\n>>')) # num of frames an object must appear before sending move cmd
-net = jetson.inference.segNet("fcn-resnet18-sun-640x512") # load segNet
 rng = np.random.default_rng()
-ardLeft = "http://192.168.110.218/lgd/199"
-ardMid = "http://192.168.110.218/lgd/919"
-ardRight = "http://192.168.110.218/lgd/991"
+ardIP = "192.168.31.124"
+ardLeft = "http://" + ardIP + "/lgd/199"
+ardRight = "http://" + ardIP + "/lgd/991"
+
+print('Testing left and right...\n')
 try:
 	requests.get(url = ardLeft)
 except:
@@ -68,19 +69,20 @@ def gstreamer_pipeline(
 
 def main():
 	pth = torch.load('best_result.pth.tar') # load fastdepth model w Torch
+	net = jetson.inference.segNet("fcn-resnet18-sun-640x512") # load segNet
 	model = pth['model'] # index correct model path
 	fps_list = [] # for fps averaging 
 	counter = [] # object detection counter
 	lane = 'middle' # begin in middle lane
 
 
-	cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=0), cv2.CAP_GSTREAMER)
+	cap = cv2.VideoCapture(gstreamer_pipeline(flip_method=2), cv2.CAP_GSTREAMER)
 	class_mask = None
 	width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
 	print('width ', width)
 	height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
 	print('height ', height)
-	fps = cap.get(cv2.CAP_PROP_FPS)
+	fps = 8#cap.get(cv2.CAP_PROP_FPS)
 
 	fourccDepth = cv2.VideoWriter_fourcc(*'MJPG')
 	fourcc = cv2.VideoWriter_fourcc(*'MJPG')
@@ -94,7 +96,7 @@ def main():
 		start = time.time()
 		ret, frame = cap.read()
 		#cv2.imshow('frame',frame)
-		#colorOut.write(frame)
+		colorOut.write(frame)
 
 		image = Image.fromarray(frame) #Image.open('image.jpg') # loads PIL image from captured frame   
 		image = image.resize((224,224),Image.ANTIALIAS) # resize to 224x224 with AA filtering
@@ -118,7 +120,7 @@ def main():
 
 		class_mask_np = jetson.utils.cudaToNumpy(class_mask) # cuda to np array
 
-		class_blacklist = (1,2,13) # class ID blacklist 
+		class_blacklist = (0,1,8,9,2,13,15) # class ID blacklist 
 		class_mask = np.reshape(class_mask_np, [224,224]) # elimininates extra dimension
            
 
@@ -129,7 +131,17 @@ def main():
 
 		depth = model(x_torch) #returns torch.Tensor of shape torch.Size([1,1,224,224])
 		#the above line takes the longest to run and is the result of the first frame wait time
-	
+		if i == 0:
+			try:
+				requests.get(url = ardLeft)
+			except:
+				pass
+
+			try:
+				requests.get(url = ardRight)
+			except:
+				pass
+			i = 1
 		depth_min = depth.min()
 		depth_max = depth.max()
 		max_val = (2**(8))-1 # 255
@@ -207,12 +219,12 @@ def main():
 					continue
 		else:
 			counter = []
-		cv2.imshow('Filtered', outFiltered)		
+		#cv2.imshow('Filtered', outFiltered)		
 		out[outMin[0],outMin[1]] = 255
 		out[:,37] = 255
 		out[:,186] = 255
-		#depthOut.write(out)
-		cv2.imshow('Depth Map Output', out)
+		depthOut.write(out)
+		#cv2.imshow('Depth Map Output', out)
 		if i == 0:
 			print('>> Running.')
 			i = 1
@@ -221,6 +233,7 @@ def main():
 		end = time.time()
 
 		fps_list.append(round(1/(end-start),3))
+		print('avg fps was', sum(fps_list)/len(fps_list))
 		if cv2.waitKey(1) & 0xFF == ord('q'):
 			print('avg fps was', sum(fps_list)/len(fps_list))
 			break # CTRL + Q to stop
